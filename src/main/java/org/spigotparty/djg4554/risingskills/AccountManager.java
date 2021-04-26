@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.spigotparty.djg4554.risingskills.dataHandlers.SQLiteHandler;
 
 public class AccountManager {
-    private RisingSkills plugin;
-    private SQLiteHandler sqLiteHandler;
+    private final RisingSkills plugin;
+    private final SQLiteHandler sqLiteHandler;
 
     public AccountManager(RisingSkills plugin, SQLiteHandler handler) {
         this.plugin = plugin;
@@ -25,6 +25,7 @@ public class AccountManager {
 
      */
     public void loadPlayerAccount(Player player) {
+
         if (!sqLiteHandler.exists(player)) {
             sqLiteHandler.createAccountData(player);
         }
@@ -47,5 +48,16 @@ public class AccountManager {
 
     }
 
+    // save the player accounts
+    public void saveAccount(PlayerAccount playerAccount) {
+        sqLiteHandler.saveAccount(playerAccount);
+    }
 
+
+    public void printMiningSKill(PlayerAccount playerAccount) {
+
+        PlayerAccount saved = sqLiteHandler.selectAll(playerAccount.getHolder());
+        playerAccount.getHolder().sendMessage("Hey you gay" + saved.getMining());
+        playerAccount.getHolder().sendMessage("Hey you not gay" + playerAccount.getMining());
+    }
 }

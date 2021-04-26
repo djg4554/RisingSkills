@@ -1,14 +1,13 @@
 package org.spigotparty.djg4554.risingskills.listeners;
 
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.spigotparty.djg4554.risingskills.AccountManager;
 import org.spigotparty.djg4554.risingskills.PlayerAccount;
 import org.spigotparty.djg4554.risingskills.RisingSkills;
-
-import java.util.Iterator;
 
 public class LeaveListener implements Listener {
 
@@ -28,19 +27,20 @@ public class LeaveListener implements Listener {
      */
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        Iterator<PlayerAccount> iterator = plugin.getOnlinePlayers().iterator();
-        Player player = event.getPlayer();
-        PlayerAccount playerAccount = null;
-        while (iterator.hasNext()) {
-            PlayerAccount current = iterator.next();
-            if (current.getHolder().equals(event.getPlayer())) {
-                playerAccount = current;
-                break;
-            }
+        PlayerAccount playerAccount = plugin.getPlayerAccountFromOnline(event.getPlayer());
+
+        if (playerAccount == null) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error: the player who left seems to not have an account loaded, pls report this error to the developer of this plugin");
+            return;
         }
-        
+
+        accountManager.saveAccount(playerAccount);
+        plugin.getOnlinePlayers().remove(playerAccount);
+
+
 
     }
+
 
 
 }
