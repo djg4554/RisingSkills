@@ -1,0 +1,6 @@
+name: RisingSkills
+version: ${project.version}
+main: org.spigotparty.djg4554.risingskills.RisingSkills
+api-version: 1.16
+authors: [ djg4554 ]
+description: Skill plugins for your server
